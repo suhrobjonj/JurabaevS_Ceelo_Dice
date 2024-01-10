@@ -25,6 +25,9 @@ public class Player {
     public void setChips(int diff) {
         chips += diff;
     }
+    public void setWager(int w) {
+        wager = w;
+    }
 
     public boolean gameOver() {
         if (chips <= 0) {
@@ -33,12 +36,13 @@ public class Player {
         return false;
     }
 
-    public int[] playerRoll(Die d1, Die d2, Die d3) {
-        d1.roll();
-        d2.roll();
-        d3.roll();
-
-        return new int[]{d1.getResult(), d2.getResult(), d3.getResult()};
+    public int[] playerRoll(Die dice) {
+        int[] rolls = new int[3];
+        for (int i = 0; i < rolls.length; i++) {
+            dice .roll();
+            rolls[i] = dice.getResult();
+        }
+        return rolls;
     }
 
 }

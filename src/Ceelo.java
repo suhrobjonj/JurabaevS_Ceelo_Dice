@@ -22,26 +22,77 @@ public class Ceelo {
     }
 
     public void play() {
+        System.out.println("Enter wagers");
+        scan.nextLine();
+        System.out.print("Player 1: ");
+        p1.setWager(scan.nextInt());
+        System.out.print("Player 2: ");
+        p2.setWager(scan.nextInt());
+        System.out.print("Player 3: ");
+        p3.setWager(scan.nextInt());
+
         System.out.println("Banker's turn!");
         int[] banker_roll = banker.playerRoll(die);
         System.out.print("Banker rolled a ");
         for (int i : banker_roll) {
             System.out.print(i + " ");
         }
-        while (checkRoll(banker_roll)) {
+        int banker_score = checkRoll(banker_roll);
+        while (banker_score == -1) {
             banker_roll = banker.playerRoll(die);
             System.out.print("\nBanker rolled a ");
             for (int i : banker_roll) {
                 System.out.print(i + " ");
             }
+            banker_score = checkRoll(banker_roll);
         }
+
+        if (banker_score == 0) {
+            System.out.println("Banker loses and pays each player the wagered amount!");
+            p1.setChips(p1.getWager());
+            p2.setChips(p2.getWager());
+            p3.setChips(p3.getWager());
+        } else if (banker_score == 7) {
+            System.out.println("Banker wins and takes each player's wagered amount!");
+            banker.setChips(p1.getWager());
+            banker.setChips(p2.getWager());
+            banker.setChips(p3.getWager());
+        } else {
+            System.out.println("Banker has a score of " + banker_score);
+            System.out.println("Roll higher than the banker to earn your wagered amount!");
+
+            System.out.println("Player 1's turn!");
+            int[] p1_roll = p1.playerRoll(die);
+            System.out.print("Player 1 rolled a ");
+            for (int i : p1_roll) {
+                System.out.print(i + " ");
+            }
+            int p1_score = checkRoll(p1_roll);
+            while (p1_score == -1) {
+                banker_roll = banker.playerRoll(die);
+                System.out.print("\nYou rolled a ");
+                for (int i : banker_roll) {
+                    System.out.print(i + " ");
+                }
+                p1_score = checkRoll(banker_roll);
+            }
+            if (p1_score == 7 || p1_score > banker_score) {
+                System.out.println("You win!");
+                p1.setChips(p1.getWager());
+            } else if (p1_score == 0 || p1_score < banker_score) {
+                System.out.println("You lose!");
+                banker.setChips(p1.getWager());
+            }
+
+        }
+
     }
 
-    private boolean checkRoll(int[] roll) {
+    private int checkRoll(int[] roll) {
         if (roll[0] == 4 || roll[1] == 4 || roll[2] == 4) {
             if (roll[0] == 5 || roll[1] == 5 || roll[2] == 5) {
                 if (roll[0] == 6 || roll[1] == 6 || roll[2] == 6) {
-                    return false;
+                    return 7;
                 }
             }
         }
@@ -49,15 +100,27 @@ public class Ceelo {
         if (roll[0] == 1 || roll[1] == 1 || roll[2] == 1) {
             if (roll[0] == 2 || roll[1] == 2 || roll[2] == 2) {
                 if (roll[0] == 3 || roll[1] == 3 || roll[2] == 3) {
-                    return false;
+                    return 0;
                 }
             }
         }
 
-        if (roll[0] != roll[1] && roll[1] != roll[2] && roll[0] != roll[2]) {
-            return true;
+        if (roll[0] == roll[1] && roll[0] != roll[2]) {
+            return roll[0];
         }
 
-        return false;
+        if (roll[1] == roll[2] && roll[1] != roll[0]) {
+            return roll [1];
+        }
+
+        if (roll[2] == roll[0] && roll[2] != roll[1]) {
+            return roll [2];
+        }
+
+        if (roll[0] != roll[1] && roll[1] != roll[2] && roll[0] != roll[2]) {
+            return -1;
+        }
+
+        return -1;
     }
 }
