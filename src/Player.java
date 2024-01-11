@@ -10,6 +10,10 @@ public class Player {
         chips = 100;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getWager() {
         return wager;
     }
