@@ -26,14 +26,27 @@ public class Banker {
         return false;
     }
 
-    public int[] playerRoll(Die dice) {
+    public void playerRoll(Die die) {
         int[] rolls = new int[3];
         for (int i = 0; i < rolls.length; i++) {
-            dice .roll();
-            rolls[i] = dice.getResult();
+            die.roll();
+            rolls[i] = die.getResult();
         }
-        return rolls;
+        System.out.print("Banker rolled a ");
+        for (int i : rolls) {
+            System.out.print(i + " ");
+        }
+        score = Die.checkRoll(rolls);
+        while (score == -1) {
+            for (int i = 0; i < rolls.length; i++) {
+                die.roll();
+                rolls[i] = die.getResult();
+            }
+            System.out.print("\nBanker rolled a ");
+            for (int i : rolls) {
+                System.out.print(i + " ");
+            }
+            score = Die.checkRoll(rolls);
+        }
     }
-
-
 }

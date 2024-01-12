@@ -8,11 +8,11 @@ public class Ceelo {
     private Banker banker;
     private String b;
     private Scanner scan = new Scanner(System.in);
-
     private Die die = new Die();
+    private int round = 1;
 
     public Ceelo() {
-        System.out.println("Welocome to Ceelo Dice!");
+        System.out.println("Welcome to Ceelo Dice!");
         System.out.print("Enter your name Player 1: ");
         p1 = new Player(scan.nextLine());
         System.out.print("Enter your name Player 2: ");
@@ -23,182 +23,97 @@ public class Ceelo {
     }
 
     public void play() {
-        System.out.println("Enter wagers");
-        System.out.print(p1.getName() + ": ");
-        p1.setWager(scan.nextInt());
-        System.out.print(p2.getName() + ": ");
-        p2.setWager(scan.nextInt());
-        System.out.print(p3.getName() + ": ");
-        p3.setWager(scan.nextInt());
+        while (!banker.gameOver()) {
+            System.out.println("\n************");
+            System.out.println("\nRound " + round + ":");
+            round++;
+            System.out.println("Enter wagers:");
+            System.out.print(p1.getName() + ": ");
+            p1.setWager(scan.nextInt());
+            System.out.print(p2.getName() + ": ");
+            p2.setWager(scan.nextInt());
+            System.out.print(p3.getName() + ": ");
+            p3.setWager(scan.nextInt());
 
-        System.out.println("Banker's turn!");
-        int[] banker_roll = banker.playerRoll(die);
-        System.out.print("Banker rolled a ");
-        for (int i : banker_roll) {
-            System.out.print(i + " ");
-        }
-        int banker_score = checkRoll(banker_roll);
-        while (banker_score == -1) {
-            banker_roll = banker.playerRoll(die);
-            System.out.print("\nBanker rolled a ");
-            for (int i : banker_roll) {
-                System.out.print(i + " ");
-            }
-            banker_score = checkRoll(banker_roll);
-        }
+            System.out.println("Banker's turn!");
+            banker.playerRoll(die);
 
-        if (banker_score == 0) {
-            System.out.println("\nBanker loses and pays each player the wagered amount!");
-            p1.setChips(p1.getWager());
-            p2.setChips(p2.getWager());
-            p3.setChips(p3.getWager());
-            banker.setChips(-(p1.getWager() + p2.getWager() + p3.getWager()));
-        } else if (banker_score == 7) {
-            System.out.println("\nBanker wins and takes each player's wagered amount!");
-            banker.setChips(p1.getWager() + p2.getWager() + p3.getWager());
-            p1.setChips(-p1.getWager());
-            p2.setChips(-p2.getWager());
-            p3.setChips(-p3.getWager());
-        } else {
-            scan.nextLine();
-            System.out.println("\nBanker has a score of " + banker_score);
-            System.out.println("\nRoll higher than the banker to earn your wagered amount!");
-
-            System.out.println(p1.getName() + "'s turn! Press enter to roll");
-            scan.nextLine();
-            int[] p1_roll = p1.playerRoll(die);
-            System.out.print(p1.getName() + " rolled a ");
-            for (int i : p1_roll) {
-                System.out.print(i + " ");
-            }
-            int p1_score = checkRoll(p1_roll);
-            while (p1_score == -1) {
-                System.out.print("Keep rolling");
-                scan.nextLine();
-                p1_roll = p1.playerRoll(die);
-                System.out.print("\n" + p1.getName() + " rolled a ");
-                for (int i : p1_roll) {
-                    System.out.print(i + " ");
-                }
-                p1_score = checkRoll(p1_roll);
-            }
-
-            if (p1_score == 7 || p1_score >= banker_score) {
-                System.out.println("You win!");
+            if (banker.getScore() == 0) {
+                System.out.println("\nBanker loses and pays each player the wagered amount!");
                 p1.setChips(p1.getWager());
-                banker.setChips(-p1.getWager());
-            } else if (p1_score == 0 || p1_score < banker_score) {
-                System.out.println("You lose!");
-                banker.setChips(p1.getWager());
-                p1.setChips(-p1.getWager());
-            }
-
-            System.out.println(p2.getName() + "'s turn! Press enter to roll");
-            scan.nextLine();
-            int[] p2_roll = p2.playerRoll(die);
-            System.out.print(p2.getName() + " rolled a ");
-            for (int i : p2_roll) {
-                System.out.print(i + " ");
-            }
-            int p2_score = checkRoll(p2_roll);
-            while (p2_score == -1) {
-                System.out.print("Keep rolling");
-                scan.nextLine();
-                p2_roll = p2.playerRoll(die);
-                System.out.print("\n" + p2.getName() + " rolled a ");
-                for (int i : p2_roll) {
-                    System.out.print(i + " ");
-                }
-                p2_score = checkRoll(p2_roll);
-            }
-
-            if (p2_score == 7 || p2_score >= banker_score) {
-                System.out.println("You win!");
                 p2.setChips(p2.getWager());
-                banker.setChips(-p2.getWager());
-            } else if (p1_score == 0 || p1_score < banker_score) {
-                System.out.println("You lose!");
-                banker.setChips(p2.getWager());
-                p2.setChips(-p2.getWager());
-            }
-
-
-            System.out.println(p3.getName() + "'s turn! Press enter to roll");
-            scan.nextLine();
-            int[] p3_roll = p3.playerRoll(die);
-            System.out.print(p3.getName() + " rolled a ");
-            for (int i : p3_roll) {
-                System.out.print(i + " ");
-            }
-            int p3_score = checkRoll(p3_roll);
-            while (p3_score == -1) {
-                System.out.print("Keep rolling");
-                scan.nextLine();
-                p3_roll = p3.playerRoll(die);
-                System.out.print("\n" + p3.getName() + " rolled a ");
-                for (int i : p3_roll) {
-                    System.out.print(i + " ");
-                }
-                p3_score = checkRoll(p3_roll);
-            }
-
-            if (p3_score == 7 || p3_score >= banker_score) {
-                System.out.println("You win!");
                 p3.setChips(p3.getWager());
-                banker.setChips(-p3.getWager());
-            } else if (p3_score == 0 || p1_score < banker_score) {
-                System.out.println("You lose!");
-                banker.setChips(p3.getWager());
+                banker.setChips(-(p1.getWager() + p2.getWager() + p3.getWager()));
+            } else if (banker.getScore() == 7) {
+                System.out.println("\nBanker wins and takes each player's wagered amount!");
+                banker.setChips(p1.getWager() + p2.getWager() + p3.getWager());
+                p1.setChips(-p1.getWager());
+                p2.setChips(-p2.getWager());
                 p3.setChips(-p3.getWager());
+            } else {
+                scan.nextLine();
+                System.out.println("\nBanker has a score of " + banker.getScore());
+                System.out.println("\nRoll higher than the banker to earn your wagered amount!");
+
+                if (!p1.gameOver()) {
+                    System.out.print("\n" + p1.getName() + "'s turn! Press enter to roll");
+                    scan.nextLine();
+                    p1.playerRoll(die, scan);
+                    if (p1.getScore() == 7 || p1.getScore() >= banker.getScore()) {
+                        System.out.println("\n" + p1.getName() + " won " + p1.getWager()+ " chips!");
+                        p1.setChips(p1.getWager());
+                        banker.setChips(-p1.getWager());
+                    } else if (p1.getScore() == 0 || p1.getScore() < banker.getScore()) {
+                        System.out.println("\n" + p1.getName() + " lost " + p1.getWager()+ " chips!");
+                        banker.setChips(p1.getWager());
+                        p1.setChips(-p1.getWager());
+                    }
+                }
+
+                if (!p2.gameOver()) {
+                    System.out.print("\n" + p2.getName() + "'s turn! Press enter to roll");
+                    scan.nextLine();
+                    p2.playerRoll(die, scan);
+                    if (p2.getScore() == 7 || p2.getScore() >= banker.getScore()) {
+                        System.out.println("\n" + p2.getName() + " won " + p2.getWager() + " chips!");
+                        p2.setChips(p2.getWager());
+                        banker.setChips(-p2.getWager());
+                    } else if (p2.getScore() == 0 || p2.getScore() < banker.getScore()) {
+                        System.out.println("\n" + p2.getName() + " lost " + p2.getWager() + " chips!");
+                        banker.setChips(p2.getWager());
+                        p2.setChips(-p2.getWager());
+                    }
+                }
+
+                if (!p3.gameOver()) {
+                    System.out.print("\n" + p3.getName() + "'s turn! Press enter to roll");
+                    scan.nextLine();
+                    p3.playerRoll(die, scan);
+                    if (p3.getScore() == 7 || p3.getScore() >= banker.getScore()) {
+                        System.out.println("\n" + p3.getName() + " won " + p3.getWager() + " chips!");
+                        p3.setChips(p3.getWager());
+                        banker.setChips(-p3.getWager());
+                    } else if (p3.getScore() == 0 || p3.getScore() < banker.getScore()) {
+                        System.out.println("\n" + p3.getName() + " lost " + p3.getWager() + " chips!");
+                        banker.setChips(p3.getWager());
+                        p3.setChips(-p3.getWager());
+                    }
+                }
+
             }
 
+            System.out.println("\n****************\nRound Stats:");
+            System.out.println("Banker: " + banker.getChips());
+            if (p1.gameOver()) {
+                System.out.println(p1.getName() + " is out!");
+            } else {
+                System.out.println(p1.getName() + ": " + p1.getChips());
+            }
+            System.out.println("Player 1: " + p1.getChips());
+            System.out.println("Player 2: " + p2.getChips());
+            System.out.println("Player 3: " + p3.getChips() + "\n");
         }
-
-        System.out.println("Round Stats:");
-        System.out.println("Banker: " + banker.getChips());
-        System.out.println("Player 1: " + p1.getChips());
-        System.out.println("Player 2: " + p2.getChips());
-        System.out.println("Player 3: " + p3.getChips());
-
     }
 
-    private int checkRoll(int[] roll) {
-        if (roll[0] == 4 || roll[1] == 4 || roll[2] == 4) {
-            if (roll[0] == 5 || roll[1] == 5 || roll[2] == 5) {
-                if (roll[0] == 6 || roll[1] == 6 || roll[2] == 6) {
-                    return 7;
-                }
-            }
-        }
-
-        if (roll[0] == roll[1] && roll[1] == roll[2]) {
-            return 7;
-        }
-
-        if (roll[0] == 1 || roll[1] == 1 || roll[2] == 1) {
-            if (roll[0] == 2 || roll[1] == 2 || roll[2] == 2) {
-                if (roll[0] == 3 || roll[1] == 3 || roll[2] == 3) {
-                    return 0;
-                }
-            }
-        }
-
-        if (roll[0] == roll[1] && roll[0] != roll[2]) {
-            return roll[0];
-        }
-
-        if (roll[1] == roll[2] && roll[1] != roll[0]) {
-            return roll [1];
-        }
-
-        if (roll[2] == roll[0] && roll[2] != roll[1]) {
-            return roll [2];
-        }
-
-        if (roll[0] != roll[1] && roll[1] != roll[2] && roll[0] != roll[2]) {
-            return -1;
-        }
-
-        return -1;
-    }
 }
+
