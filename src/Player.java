@@ -26,8 +26,15 @@ public class Player {
     public void setChips(int diff) {
         chips += diff;
     }
-    public void setWager(int w) {
-        wager = w;
+    public void setWager(Scanner s) {
+        System.out.print(name + ": ");
+        wager = s.nextInt();
+        while (wager > chips) {
+            System.out.println("Can't bet more than what you have!");
+            System.out.print(name + ": ");
+            wager = s.nextInt();
+        }
+
     }
 
     public boolean gameOver() {
@@ -46,6 +53,11 @@ public class Player {
         System.out.print(name+ " rolled a ");
         for (int i : rolls) {
             System.out.print(i + " ");
+            try {
+                Thread.sleep(500);
+            } catch (Exception e) {
+                System.out.println("error");
+            }
         }
         score = Die.checkRoll(rolls);
         while (score == -1) {
@@ -57,9 +69,15 @@ public class Player {
             System.out.print(name + " rolled a ");
             for (int i : rolls) {
                 System.out.print(i + " ");
+                try {
+                    Thread.sleep(500);
+                } catch (Exception e) {
+                    System.out.println("error");
+                }
             }
             score = Die.checkRoll(rolls);
         }
     }
+
 
 }

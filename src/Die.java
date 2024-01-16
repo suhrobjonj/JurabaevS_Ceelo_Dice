@@ -54,5 +54,15 @@ public class Die {
         return -1;
     }
 
+    public static void printScore(int score) {
+        if (score == 7) {
+            System.out.println("\nAutomatic Win!");
+        } else if (score == 0) {
+            System.out.println("\nAutomatic Loss!");
+        } else {
+            System.out.println("\nScore of " + score);
+        }
+    }
+
 
 }

@@ -4,7 +4,7 @@ public class Banker {
     private int score;
 
     public Banker() {
-        chips = 1000;
+        chips = 10;
     }
 
     public int getChips() {
@@ -35,6 +35,12 @@ public class Banker {
         System.out.print("Banker rolled a ");
         for (int i : rolls) {
             System.out.print(i + " ");
+            try {
+                Thread.sleep(500);
+            } catch (Exception e) {
+                System.out.println("error");
+            }
+
         }
         score = Die.checkRoll(rolls);
         while (score == -1) {
@@ -44,6 +50,11 @@ public class Banker {
             }
             System.out.print("\nBanker rolled a ");
             for (int i : rolls) {
+                try {
+                    Thread.sleep(500);
+                } catch (Exception e) {
+                    System.out.println("error");
+                }
                 System.out.print(i + " ");
             }
             score = Die.checkRoll(rolls);
