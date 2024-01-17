@@ -4,7 +4,7 @@ public class Banker {
     private int score;
 
     public Banker() {
-        chips = 10;
+        chips = 1000;
     }
 
     public int getChips() {
@@ -17,6 +17,27 @@ public class Banker {
 
     public void setChips(int diff) {
         chips += diff;
+    }
+    public void setChips(Player p) {
+        int total = 0;
+        if (p.getChips() >= p.getWager()) {
+            chips += p.getWager();
+            p.setChips(-p.getWager());
+            total = p.getWager();
+            System.out.println("The banker takes " + total + " chips from " + p.getName());
+            System.out.println("The player's remaining balance is: " + p.getChips());
+        } else {
+            chips += p.getChips();
+            p.setChips(-p.getChips());
+            total = p.getChips();
+            System.out.println("The banker takes " + total + " chips from " + p.getName());
+            System.out.println(p.getName() + " lost all of the chips!");
+        }
+        try {
+            Thread.sleep(500);
+        } catch (Exception e) {
+            System.out.println("error");
+        }
     }
 
     public boolean gameOver() {
