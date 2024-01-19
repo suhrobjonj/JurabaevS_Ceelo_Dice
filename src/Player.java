@@ -82,7 +82,7 @@ public class Player {
             die.roll();
             rolls[i] = die.getResult();
         }
-        System.out.print(name+ " rolled a ");
+        System.out.print(ConsoleUtility.CYAN + name+ " rolled a ");
         for (int i : rolls) {
             System.out.print(i + " ");
             try {
@@ -98,7 +98,7 @@ public class Player {
                 die.roll();
                 rolls[i] = die.getResult();
             }
-            System.out.print(name + " rolled a ");
+            System.out.print(name + " rolled a " + ConsoleUtility.CYAN);
             for (int i : rolls) {
                 System.out.print(i + " ");
                 try {
