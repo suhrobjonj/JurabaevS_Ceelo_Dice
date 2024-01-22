@@ -8,7 +8,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        chips = 100;
+        chips = 200;
     }
 
     public String getName() {

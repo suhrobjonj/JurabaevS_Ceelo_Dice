@@ -36,15 +36,15 @@ public class Die {
         }
 
         if (roll[0] == roll[1] && roll[0] != roll[2]) {
-            return roll[0];
+            return roll[2];
         }
 
         if (roll[1] == roll[2] && roll[1] != roll[0]) {
-            return roll [1];
+            return roll [0];
         }
 
         if (roll[2] == roll[0] && roll[2] != roll[1]) {
-            return roll [2];
+            return roll [1];
         }
 
         if (roll[0] != roll[1] && roll[1] != roll[2] && roll[0] != roll[2]) {
