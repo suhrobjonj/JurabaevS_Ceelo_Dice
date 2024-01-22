@@ -17,7 +17,25 @@ public class Ceelo {
     // setting initial values for each object
     public Ceelo() {
         System.out.println(ConsoleUtility.BLUE + "Welcome to Ceelo Dice!");
-        System.out.print("Enter your name Player 1: ");
+        System.out.println(ConsoleUtility.YELLOW + "This game consists of 1 Banker and 3 Players");
+        ConsoleUtility.shortWait();
+        System.out.println("At the start of a round, all players will enter a wager amount less than or equal to the number of chips THEY have");
+        System.out.println("The Banker will roll first, either taking or paying the wagered amount");
+        ConsoleUtility.shortWait();
+        System.out.println("Everyone will roll 3 times:");
+        ConsoleUtility.shortWait();
+        System.out.println("All numbers are equal (3,3,3) - Automatic Win");
+        System.out.println("Rolls representing 4/5/6 in any order - Automatic Win");
+        ConsoleUtility.shortWait();
+        System.out.println("Rolls representing 1/2/3 in any order - Automatic Loss");
+        ConsoleUtility.shortWait();
+        System.out.println("Rolling a double yields a score of the 3rd roll (5,5,2) - Score of 2");
+        ConsoleUtility.shortWait();
+        System.out.println("Any other rolls will result with the Banker or Player rolling again");
+        ConsoleUtility.shortWait();
+        System.out.println("The game continues until either the Banker or ALL of the players are out!");
+        ConsoleUtility.longWait();
+        System.out.print(ConsoleUtility.BLUE + "Enter your name Player 1: ");
         p1 = new Player(scan.nextLine());
         System.out.print("Enter your name Player 2: ");
         p2 = new Player(scan.nextLine());
@@ -139,12 +157,12 @@ public class Ceelo {
             }
 
             // game is over
-            ConsoleUtility.longWait();
+            ConsoleUtility.shortWait();
             ConsoleUtility.clearScreen();
 
             // printing results
             if (banker.gameOver()) {
-                System.out.println("The players have broken the bank!\n");
+                System.out.println("\nThe players have broken the bank!\n");
                 if (p1.getChips() > p2.getChips() && p1.getChips() > p3.getChips()) {
                     System.out.println(p1.getName() + " has won the game!\n");
                 } else if (p2.getChips() > p3.getChips() && p2.getChips() > p1.getChips()) {
@@ -162,6 +180,7 @@ public class Ceelo {
                 resetGame();
             } else {
                 gameOver = true;
+                System.out.println("Thanks for playing!");
             }
         }
 

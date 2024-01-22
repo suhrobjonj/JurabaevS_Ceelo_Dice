@@ -4,7 +4,7 @@ public class Banker {
     private int score;
 
     public Banker() {
-        chips = 1000;
+        chips = 10;
     }
 
     public int getChips() {
