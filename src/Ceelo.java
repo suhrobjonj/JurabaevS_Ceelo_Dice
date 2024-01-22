@@ -14,6 +14,7 @@ public class Ceelo {
 
     // introduction to the game with rules
     // getting Players' names
+    // setting initial values for each object
     public Ceelo() {
         System.out.println(ConsoleUtility.BLUE + "Welcome to Ceelo Dice!");
         System.out.print("Enter your name Player 1: ");
@@ -25,6 +26,7 @@ public class Ceelo {
         banker = new Banker();
     }
 
+    // main logic utilizing all of the classes o a functioning game
     public void play() {
         // double while loops
         while (!gameOver) { // option to play again
@@ -165,7 +167,7 @@ public class Ceelo {
 
     }
 
-    // sets the banker and players to default value
+    // sets the banker and players to default value in case of playing again
     private void resetGame() {
         banker = new Banker();
         p1 = new Player(p1.getName());
