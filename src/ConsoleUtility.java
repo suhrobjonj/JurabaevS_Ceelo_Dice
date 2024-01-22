@@ -9,6 +9,23 @@ public class ConsoleUtility {
     public static final String CYAN = "\033[0;36m";    // CYAN
     public static final String WHITE = "\033[0;37m";   // WHITE
 
+    //static methods representing code lines used in several parts of the program
+    public static void shortWait() {
+        try {
+            Thread.sleep(500);
+        } catch (Exception e) {
+            System.out.println("error");
+        }
+    }
+
+    public static void longWait() {
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            System.out.println("error");
+        }
+    }
+
     // CLEARSCREEN ONLY WORKS IN TERMINAL, NOT IN INTELLIJ'S RUN CONSOLE
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");

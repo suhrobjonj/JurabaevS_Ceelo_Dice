@@ -12,6 +12,8 @@ public class Ceelo {
     private int round = 1;
     private boolean gameOver = false;
 
+    // introduction to the game with rules
+    // getting Players' names
     public Ceelo() {
         System.out.println(ConsoleUtility.BLUE + "Welcome to Ceelo Dice!");
         System.out.print("Enter your name Player 1: ");
@@ -23,28 +25,21 @@ public class Ceelo {
         banker = new Banker();
     }
 
-    private void resetGame() {
-        banker = new Banker();
-        p1 = new Player(p1.getName());
-        p2 = new Player(p2.getName());
-        p3 = new Player(p3.getName());
-    }
-
     public void play() {
-        while (gameOver == false) {
-            while (!banker.gameOver() && !(p1.gameOver() && p2.gameOver() && p3.gameOver())) {
+        // double while loops
+        while (!gameOver) { // option to play again
+            while (!banker.gameOver() && !(p1.gameOver() && p2.gameOver() && p3.gameOver())) { // checking if the individual game is over
                 ConsoleUtility.clearScreen();
+                // printing stats
                 System.out.println(ConsoleUtility.YELLOW + "\n****************\nStats:");
                 System.out.println("Banker: " + banker.getChips());
                 System.out.println(p1);
                 System.out.println(p2);
                 System.out.println(p3);
                 System.out.println("************\n");
-                try {
-                    Thread.sleep(500);
-                } catch (Exception e) {
-                    System.out.println("error");
-                }
+                ConsoleUtility.shortWait();
+
+                // printing the round number and getting wager amount from each player
                 System.out.println("\nRound " + round + ":");
                 round++;
                 System.out.println(ConsoleUtility.GREEN + "Enter wagers:");
@@ -59,49 +54,38 @@ public class Ceelo {
                 }
                 ConsoleUtility.clearScreen();
 
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
-                    System.out.println("error");
-                }
-
-
+                // banker's turn
                 System.out.println(ConsoleUtility.BLUE + "Banker's turn!");
-                banker.playerRoll(die);
-                if (banker.getScore() == 0) {
+                banker.roll(die);
+                if (banker.getScore() == 0) { // loss
                     System.out.println("\nAutomatic Loss!\nBanker loses and pays each player the wagered amount!");
-                    p1.setChips(banker);
-                    p2.setChips(banker);
-                    p3.setChips(banker);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (Exception e) {
-                        System.out.println("error");
+                    if (!p1.gameOver()) {
+                        p1.setChips(banker);
                     }
-                } else if (banker.getScore() == 7) {
+                    if (!p2.gameOver()) {
+                        p2.setChips(banker);
+                    }
+                    if (!p3.gameOver()) {
+                        p3.setChips(banker);
+                    }
+                    ConsoleUtility.longWait();
+                } else if (banker.getScore() == 7) { // win
                     System.out.println("\nAutomatic Win!\nBanker wins and takes each player's wagered amount!");
                     banker.setChips(p1);
                     banker.setChips(p2);
                     banker.setChips(p3);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (Exception e) {
-                        System.out.println("error");
-                    }
-                } else {
+                    ConsoleUtility.longWait();
+                } else { // numeric score
                     scan.nextLine();
                     System.out.println(ConsoleUtility.RESET + "\nBanker has a score of " + banker.getScore());
                     System.out.println("\nRoll higher than the banker to earn your wagered amount!");
-                    try {
-                        Thread.sleep(2000);
-                    } catch (Exception e) {
-                        System.out.println("error");
-                    }
+                    ConsoleUtility.longWait();
                     ConsoleUtility.clearScreen();
 
+                    // Player 1's turn
                     if (!banker.gameOver()) {
                         if (!p1.gameOver()) {
-                            System.out.print("\n" + p1.getName() + "'s turn! Score higher than " + banker.getScore() + "\nPress enter to roll");
+                            System.out.print("\n" + p1.getName() + "'s turn! Score higher than or equal to " + banker.getScore() + "\nPress enter to roll");
                             scan.nextLine();
                             p1.playerRoll(die, scan);
                             Die.printScore(p1.getScore());
@@ -113,16 +97,11 @@ public class Ceelo {
                                 banker.setChips(p1);
                             }
                         }
-
-                        try {
-                            Thread.sleep(2000);
-                        } catch (Exception e) {
-                            System.out.println("error");
-                        }
-                        ConsoleUtility.clearScreen();
-
+                        // Player 2's turn
                         if (!p2.gameOver()) {
-                            System.out.print("\n" + p2.getName() + "'s turn! Score higher than " + banker.getScore() + "\nPress enter to roll");
+                            ConsoleUtility.longWait();
+                            ConsoleUtility.clearScreen();
+                            System.out.print("\n" + p2.getName() + "'s turn! Score higher than or equal to " + banker.getScore() + "\nPress enter to roll");
                             scan.nextLine();
                             p2.playerRoll(die, scan);
                             Die.printScore(p2.getScore());
@@ -134,16 +113,11 @@ public class Ceelo {
                                 banker.setChips(p2);
                             }
                         }
-
-                        try {
-                            Thread.sleep(2000);
-                        } catch (Exception e) {
-                            System.out.println("error");
-                        }
-                        ConsoleUtility.clearScreen();
-
+                        // Player 3's turn
                         if (!p3.gameOver()) {
-                            System.out.print("\n" + p3.getName() + "'s turn! Score higher than " + banker.getScore() + "\nPress enter to roll");
+                            ConsoleUtility.longWait();
+                            ConsoleUtility.clearScreen();
+                            System.out.print("\n" + p3.getName() + "'s turn! Score higher than or equal to " + banker.getScore() + "\nPress enter to roll");
                             scan.nextLine();
                             p3.playerRoll(die, scan);
                             Die.printScore(p3.getScore());
@@ -155,37 +129,31 @@ public class Ceelo {
                                 banker.setChips(p3);
                             }
                         }
-                        try {
-                            Thread.sleep(2000);
-                        } catch (Exception e) {
-                            System.out.println("error");
-                        }
+                        ConsoleUtility.longWait();
                         ConsoleUtility.clearScreen();
-
                     }
 
                 }
             }
 
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
-                System.out.println("error");
-            }
+            // game is over
+            ConsoleUtility.longWait();
             ConsoleUtility.clearScreen();
 
+            // printing results
             if (banker.gameOver()) {
-                System.out.println("The players have broken the bank! + \n");
+                System.out.println("The players have broken the bank!\n");
                 if (p1.getChips() > p2.getChips() && p1.getChips() > p3.getChips()) {
-                    System.out.println(p1.getName() + " has won the game! + \n");
+                    System.out.println(p1.getName() + " has won the game!\n");
                 } else if (p2.getChips() > p3.getChips() && p2.getChips() > p1.getChips()) {
-                    System.out.println(p2.getName() + " has won the game! + \n");
+                    System.out.println(p2.getName() + " has won the game!\n");
                 } else if (p3.getChips() > p2.getChips() && p1.getChips() < p3.getChips()) {
-                    System.out.println(p3.getName() + " has won the game! + \n");
+                    System.out.println(p3.getName() + " has won the game!\n");
                 }
             } else {
                 System.out.println("The banker has won!");
             }
+            // option to play again
             System.out.print("Play again? (y/n) ");
             if (scan.nextLine().equals("y")) {
                 gameOver = false;
@@ -195,6 +163,14 @@ public class Ceelo {
             }
         }
 
+    }
+
+    // sets the banker and players to default value
+    private void resetGame() {
+        banker = new Banker();
+        p1 = new Player(p1.getName());
+        p2 = new Player(p2.getName());
+        p3 = new Player(p3.getName());
     }
 }
 
